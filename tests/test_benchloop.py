@@ -201,6 +201,13 @@ class TestArgv(unittest.TestCase):
         argv = benchloop.build_argv("echo hi", "/bin/sh")
         self.assertEqual(argv, ["/bin/sh", "-c", "echo hi"])
 
+    @unittest.skipUnless(os.name == "nt", "只在 Windows 上有引号保留的问题")
+    def test_windows_quoted_path_loses_its_quotes(self):
+        # posix=False 会把引号留在 token 里，直接传给 CreateProcess 会变成转义后的字面引号。
+        argv = benchloop.build_argv(r'"C:\Program Files\Python\python.exe" -c pass', None)
+        self.assertEqual(argv[0], r"C:\Program Files\Python\python.exe")
+        self.assertEqual(argv[1:], ["-c", "pass"])
+
 
 class TestResolveShell(unittest.TestCase):
     def test_none_means_direct(self):

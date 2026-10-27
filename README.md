@@ -142,4 +142,4 @@ python benchloop.py -n 10 "python -c 'for _ in range(1000): sum(range(1000))'"
 python -m unittest discover -s tests
 ```
 
-54 个用例，覆盖分位数、离群判定、执行顺序、bootstrap 区间、符号检验、命令行行为和失败处理。
+55 个用例，覆盖分位数、离群判定、执行顺序、bootstrap 区间、符号检验、命令行行为和失败处理。
