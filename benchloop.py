@@ -453,7 +453,7 @@ def render_text(commands, labels, summaries, comparisons, floor_ns, interleaved,
     if floor_ns:
         floor_txt = format_duration(floor_ns)
         fastest = min(s["median_ns"] for s in summaries)
-        if fastest < floor_ns * 3:
+        if fastest < floor_ns * 5:
             lines.append(
                 "spawn floor %s（空命令的中位数）—— 最快的命令只有它的 %.1f 倍，"
                 "量到的主要是进程创建，不是你的程序" % (floor_txt, fastest / floor_ns)

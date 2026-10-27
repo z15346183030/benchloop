@@ -239,6 +239,27 @@ class TestComparePaired(unittest.TestCase):
             benchloop.compare_paired([1, 2], [1], "#1", "#2")
 
 
+class TestRenderText(unittest.TestCase):
+    def render(self, samples, floor_ns):
+        summaries = [benchloop.summarize(samples)]
+        return benchloop.render_text(
+            ["demo"], ["#1"], summaries, [], floor_ns, False, len(samples), 0,
+            "auto", [list(samples)],
+        )
+
+    def test_warns_when_command_is_close_to_the_floor(self):
+        text = self.render([200], 100)
+        self.assertIn("spawn floor", text)
+        self.assertIn("量到的主要是进程创建", text)
+
+    def test_says_floor_is_minor_when_command_is_far_above(self):
+        text = self.render([5000], 100)
+        self.assertIn("进程创建只占小头", text)
+
+    def test_no_floor_line_when_probe_skipped(self):
+        self.assertNotIn("spawn floor", self.render([5000], None))
+
+
 class TestCli(unittest.TestCase):
     """真跑子进程，但只跑最便宜的。用 --no-floor 省掉地板探测。"""
 
